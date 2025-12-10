@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from 'axios';
 
 export default function Register() {
+
+  const api = axios.create({
+  baseURL: 'http://localhost:5000/api/auth',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,9 +40,24 @@ export default function Register() {
   };
 
   const handleSubmit = (e) => {
+
+    console.log("teste", formData);
+
     e.preventDefault();
     if (validateForm()) {
       // Aqui você implementaria a lógica de registro
+
+        api.post('/register', {
+        email: formData.email,
+        password: formData.password,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
       console.log("Registro:", formData);
       // Por enquanto vamos apenas redirecionar para login
       navigate("/login");

@@ -1,17 +1,40 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/auth',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+
+
   const handleSubmit = (e) => {
+    
     e.preventDefault();
     // Simulação de login
+    api.post('/login', {
+        email: email,
+        password: password,
+        })
+        .then(function (response) {
+          if (response.status === 200) {
+            // Login bem-sucedido, redireciona para a página inicial
+            navigate("/home");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    console.log("Ver login", e.target)
     console.log("Login:", { email, password });
     // Apenas redireciona para a home
-    navigate("/home");
+    //navigate("/home");
   };
 
   return (

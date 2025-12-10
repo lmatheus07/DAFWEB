@@ -5,14 +5,48 @@ export default function CompareResult({ result, onSendEmailNAF }) {
   if (!result) return null;
 
   const { PF, PJ, input } = result;
-
   async function handleSendToNAF() {
     setSending(true);
-    // Simulação de envio: chamaria API real aqui (fetch). Aqui só aguardamos 1s e retornamos sucesso.
+
+    async function handleSendToNAF() {
+      setSending(true);
+
+      try {
+        const res = await fetch("http://localhost:3000/email/send-calculation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nome: input.nome || "Usuário", // ou outro campo que você use
+            email: "seuemail@gmail.com", // aqui para teste, coloque seu email
+            resultado: JSON.stringify(result, null, 2), // envia todo o resultado da simulação
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Resultado enviado ao NAF com sucesso!");
+          onSendEmailNAF && onSendEmailNAF({ success: true });
+        } else {
+          alert(data.error || "Erro ao enviar email");
+          onSendEmailNAF && onSendEmailNAF({ success: false });
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao enviar email");
+        onSendEmailNAF && onSendEmailNAF({ success: false });
+      }
+
+      setSending(false);
+    }
+
+
     await new Promise((r) => setTimeout(r, 800));
     setSending(false);
     onSendEmailNAF && onSendEmailNAF({ success: true });
-    alert("Resultado enviado ao NAF (simulado).");
+    alert("Resultado enviado ao NAF.");
   }
 
   return (
@@ -52,9 +86,8 @@ export default function CompareResult({ result, onSendEmailNAF }) {
       <hr />
 
       <div className="d-flex gap-2">
-        <button className="btn btn-outline-secondary" onClick={() => navigator.clipboard?.writeText(JSON.stringify(result))}>Copiar resultado (JSON)</button>
         <button className="btn btn-success" onClick={handleSendToNAF} disabled={sending}>
-          {sending ? "Enviando..." : "Enviar ao NAF (simulado)"}
+          {sending ? "Enviando..." : "Enviar ao NAF"}
         </button>
       </div>
     </div>
