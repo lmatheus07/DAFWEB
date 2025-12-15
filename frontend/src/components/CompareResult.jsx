@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import GraficoComparativo from "./GraficoComparativo";
 
 export default function CompareResult({ result, onSendEmailNAF }) {
   const [sending, setSending] = useState(false);
@@ -8,45 +9,38 @@ export default function CompareResult({ result, onSendEmailNAF }) {
   async function handleSendToNAF() {
     setSending(true);
 
-    async function handleSendToNAF() {
-      setSending(true);
-
-      try {
-        const res = await fetch("http://localhost:3000/email/send-calculation", {
+    try {
+      const res =
+        await fetch("http://localhost:5000/email/send-calculation", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            nome: input.nome || "Usuário", // ou outro campo que você use
-            email: "seuemail@gmail.com", // aqui para teste, coloque seu email
-            resultado: JSON.stringify(result, null, 2), // envia todo o resultado da simulação
+            emailUser: input.emailUser,
+            emailNAF: input.emailNAF,
+            profissao: input.profissao,
+            rendaMensal: input.rendaMensal,
+            custosMensais: input.custosMensais,
+            PF,
+            PJ
           }),
         });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (res.ok) {
-          alert("Resultado enviado ao NAF com sucesso!");
-          onSendEmailNAF && onSendEmailNAF({ success: true });
-        } else {
-          alert(data.error || "Erro ao enviar email");
-          onSendEmailNAF && onSendEmailNAF({ success: false });
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao enviar email");
+      if (res.ok) {
+        alert("Resultado enviado ao NAF com sucesso!");
+        onSendEmailNAF && onSendEmailNAF({ success: true });
+      } else {
+        alert(data.error || "Erro ao enviar email");
         onSendEmailNAF && onSendEmailNAF({ success: false });
       }
-
-      setSending(false);
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao enviar email");
+      onSendEmailNAF && onSendEmailNAF({ success: false });
     }
 
-
-    await new Promise((r) => setTimeout(r, 800));
     setSending(false);
-    onSendEmailNAF && onSendEmailNAF({ success: true });
-    alert("Resultado enviado ao NAF.");
   }
 
   return (
@@ -82,6 +76,9 @@ export default function CompareResult({ result, onSendEmailNAF }) {
           <p className="small text-muted mb-0">Faixa Simples: até R$ {PJ.faixa.upToAnnual.toLocaleString()}</p>
         </div>
       </div>
+
+      <hr />
+      <GraficoComparativo PF={PF} PJ={PJ} />
 
       <hr />
 

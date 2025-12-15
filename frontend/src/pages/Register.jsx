@@ -5,7 +5,7 @@ import axios from 'axios';
 export default function Register() {
 
   const api = axios.create({
-  baseURL: 'http://localhost:5000/api/auth',
+  baseURL: 'http://localhost:5000/auth',
   timeout: 1000,
   headers: {'X-Custom-Header': 'foobar'}
 });

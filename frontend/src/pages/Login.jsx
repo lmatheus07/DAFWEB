@@ -1,52 +1,45 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-const api = axios.create({
-  baseURL: 'http://localhost:5000/api/auth',
-  timeout: 1000,
-  headers: {'X-Custom-Header': 'foobar'}
-});
-
+  const api = axios.create({
+    baseURL: "http://localhost:5000/auth",
+    timeout: 1000,
+    headers: { "X-Custom-Header": "foobar" },
+  });
 
   const handleSubmit = (e) => {
-    
     e.preventDefault();
-    // Simulação de login
-    api.post('/login', {
+    api
+      .post("/login", {
         email: email,
         password: password,
-        })
-        .then(function (response) {
-          if (response.status === 200) {
-            // Login bem-sucedido, redireciona para a página inicial
-            navigate("/home");
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    console.log("Ver login", e.target)
-    console.log("Login:", { email, password });
-    // Apenas redireciona para a home
-    //navigate("/home");
+      })
+      .then(function (response) {
+        if (response.status === 200) {
+          navigate("/home");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
-    <div className="container animate__animated animate__fadeInUp" style={{marginTop: '250px'}} >
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card shadow">
-            <div className="card-body">
-              <h2 className="text-center mb-4">Login</h2>
+    <div className="container-fluid bg-white min-vh-100 d-flex align-items-center justify-content-center">
+      <div className="row w-100 justify-content-center">
+        <div className="col-md-6 col-lg-4">
+          <div className="card shadow-lg border-0">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4 fw-bold">Login</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">Email:</label>
+                  <label className="form-label">Email</label>
                   <input
                     type="email"
                     className="form-control"
@@ -57,23 +50,26 @@ const api = axios.create({
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Senha:</label>
+                  <label className="form-label">Senha</label>
                   <input
                     type="password"
                     className="form-control"
+                    placeholder="Digite sua senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
-                <div className="d-grid">
-                  <button type="submit" className="btn btn-primary">
+                <div className="d-grid mb-3">
+                  <button type="submit" className="btn btn-primary btn-lg">
                     Entrar
                   </button>
                 </div>
-                <p className="text-center mt-3">
+                <p className="text-center mb-0">
                   Não tem uma conta?{" "}
-                  <Link to="/register">Registre-se aqui</Link>
+                  <Link to="/register" className="fw-bold">
+                    Registre-se aqui
+                  </Link>
                 </p>
               </form>
             </div>

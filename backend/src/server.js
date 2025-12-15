@@ -6,9 +6,9 @@ import emailRoutes from './routes/emailRoutes.js';
 
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
 const app = express();
 
-const PORT = process.env.PORT || 5000;
 
 //Middlewares
 app.use(express.json());
@@ -17,14 +17,15 @@ app.use(cors({
   credentials: true,
 }));
 
-// Health check
+app.use(express.json());
+
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Servidor ativo' });
 });
 
 // Rotas
-app.use('/api/auth', authRoutes);
-app.use('/api/email', emailRoutes);
+app.use('/auth', authRoutes);
+app.use('/email', emailRoutes);
 
 
 // Tratamento de rotas não encontradas
