@@ -24,7 +24,7 @@ export function generateEmailTemplate(data) {
       <tr>
         <td style="background:#7B6ED6; padding:22px; color:white; text-align:center;">
           <h1 style="margin:0; font-size:24px; font-weight:700;">Relatório Tributário — PF × PJ</h1>
-          <p style="margin:6px 0 0 0; font-size:14px; opacity:0.95;">Sistema DAF — Cálculo Fiscal Inteligente</p>
+          <p style="margin:6px 0 0 0; font-size:14px; opacity:0.95;">Cálculo Fiscal Inteligente</p>
         </td>
       </tr>
 

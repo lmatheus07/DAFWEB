@@ -78,23 +78,26 @@ Função principal que retorna o comparativo PF x PJ
 Input: rendaMensal (faturamento), custosMensais, profissao (string)
  */
 export function compareTaxes({ rendaMensal, custosMensais }) {
-  const basePF = Math.max(0, rendaMensal - custosMensais);
-  const irpf = calcIRPF(basePF);
-
+  const irpf = calcIRPF(Math.max(0, rendaMensal - custosMensais));
   const simples = calcSimples(rendaMensal, custosMensais);
 
-  // Resultado final: liquido após imposto
-  const liquidoPF = round2(rendaMensal - irpf.imposto);
+  const inssPF = round2(rendaMensal * 0.11); // exemplo de INSS PF
+  const liquidoPF = round2(rendaMensal - (irpf.imposto + inssPF));
   const liquidoPJ = round2(rendaMensal - simples.totalImpostos);
+
+  // Simples Nacional 6% (valor mensal)
+  const simples6PJ = round2(rendaMensal * 0.06);
 
   return {
     input: { rendaMensal, custosMensais },
     PF: {
-      base: round2(basePF),
-      imposto: irpf.imposto,
+      inss: inssPF,
+      ir: irpf.imposto,
+      isentoIR: irpf.imposto === 0,
+      imposto: round2(irpf.imposto + inssPF),
       effectiveRate: irpf.effectiveRate,
       liquido: liquidoPF,
-      bracket: irpf.bracket
+      bracket: irpf.bracket,
     },
     PJ: {
       faturamento: rendaMensal,
@@ -102,10 +105,13 @@ export function compareTaxes({ rendaMensal, custosMensais }) {
       prolabore: simples.prolabore,
       inss: simples.inss,
       irProlabore: simples.irProlabore,
+      ir: simples.irProlabore.imposto,
+      isentoIR: simples.irProlabore.imposto === 0,
       totalImpostos: simples.totalImpostos,
       effectiveRate: simples.effectiveRate,
       liquido: liquidoPJ,
-      faixa: simples.faixa
-    }
+      faixa: simples.faixa,
+      simples6: simples6PJ,
+    },
   };
 }

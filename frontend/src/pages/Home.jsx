@@ -22,52 +22,53 @@ export default function Home() {
         custosMensais: data.custosMensais,
         profissao: data.profissao,
         sendEmail: data.sendEmail,
-        emailUser: data.emailUser,   // importante para envio
-        emailNAF: data.emailNAF,     // importante para envio
+        emailUser: data.emailUser,
+        emailNAF: data.emailNAF,
       },
     });
   }
 
   function handleBack() {
-    setResult(null); // limpa resultado e volta ao formulário
-  }
-
-  // 👉 Aqui você coloca a função de callback para o CompareResult
-  async function handleSendEmailNAF(payload) {
-    console.log("Resultado do envio:", payload);
-    // aqui você pode tratar o retorno do backend, mostrar alert, etc.
+    setResult(null);
   }
 
   return (
-    <div className="container-fluid min-vh-100 bg-white text-dark">
-      {/* Barra superior */}
-      <div className="row bg-primary text-light py-3 mb-4">
-        <div className="col d-flex justify-content-between align-items-center px-4">
-          <div>
-            <h5 className="mb-0 fw-bold">DAF - Calculadora Tributária</h5>
-            <p className="mb-0 small">Compare PF vs PJ — Simples Nacional</p>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="btn btn-outline-light btn-sm fw-bold"
-          >
-            Sair
-          </button>
+    <div
+      className="container-fluid min-vh-100"
+      style={{ backgroundColor: "#f3f1ff", color: "#333" }}
+    >
+      {/* Header com botão de sair */}
+      <div
+        className="header mb-4 d-flex justify-content-between align-items-center"
+        style={{
+          background: "linear-gradient(135deg, #6a5acd, #a6b1ff)",
+          marginLeft: "-12px",
+          marginRight: "-10px",
+          padding: "25px",
+          color: "white",
+        }}
+      >
+        <div>
+          <h1 className="fw-bold mb-0">Calculadora Tributária</h1>
+          <p className="mb-0">Compare PF vs PJ de forma simples</p>
         </div>
+        <button
+          onClick={handleLogout}
+          className="btn btn-light fw-bold rounded-pill px-4"
+        >
+          Sair
+        </button>
       </div>
 
-      {/* Conteúdo central */}
-      <div className="row justify-content-center">
-        <div className="col-12 col-lg-8">
-          {!result ? (
-            <CalculatorForm onCompare={handleCompare} />
-          ) : (
-            <CompareResult
-              result={result}
-              onBack={handleBack}
-              onSendEmailNAF={handleSendEmailNAF} // passa para o CompareResult
-            />
-          )}
+      <div className="container">
+        <div>
+          <div className="card-body">
+            {!result ? (
+              <CalculatorForm onCompare={handleCompare} />
+            ) : (
+              <CompareResult result={result} onBack={handleBack} />
+            )}
+          </div>
         </div>
       </div>
     </div>

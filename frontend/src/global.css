@@ -1,0 +1,88 @@
+/* Tipografia e base */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cabeçalhos */
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Botões */
+.btn-primary {
+  background-color: #3B82F6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-outline-light {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Cards */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: none;
+}
+
+/* Barra superior */
+.bg-primary {
+  background-color: #3B82F6 !important;
+}
+
+.text-primary {
+  color: #3B82F6 !important;
+}
+
+/* Tabelas */
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+/* Inputs */
+input, select {
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  padding: 8px 12px;
+}
+
+input:focus, select:focus {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
+  outline: none;
+}
+
+/* Gráficos */
+.chart-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-top: 20px;
+}

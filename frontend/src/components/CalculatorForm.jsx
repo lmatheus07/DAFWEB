@@ -53,135 +53,151 @@ export default function CalculatorForm({ onCompare }) {
   }
 
   return (
-    <form
-      id="calculatorForm"
-      onSubmit={handleSubmit}
-      className="animate__animated animate__fadeInUp"
+  <form
+    id="calculatorForm"
+    onSubmit={handleSubmit}
+    className="animate__animated animate__fadeInUp p-4 rounded-3 shadow-lg"
+    style={{ backgroundColor: "white", color: "#333" }}
+  >
+    <div
+      className="mb-4 text-center text-white rounded-3"
+      style={{
+        background: "linear-gradient(135deg, #6a5acd, #a6b1ff)",
+        padding: "20px"
+      }}
     >
-      <table className="table table-borderless align-middle text-light">
-        <tbody>
-          <tr>
-            <td style={{ width: "35%" }}>
-              <label className="form-label mb-0">
-                Renda Mensal (R$) — até R$ 15.000
-              </label>
-            </td>
-            <td>
+      <h4 className="fw-bold mb-0">Simulação</h4>
+    </div>
+
+    <table className="table table-borderless align-middle">
+      <tbody>
+        <tr>
+          <td style={{ width: "35%" }}>
+            <label className="form-label mb-0" style={{ color: "#5a3ec8" }}>
+              Renda Mensal (R$) — até R$ 15.000
+            </label>
+          </td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="Ex: 5000.00"
+              className={`form-control rounded-3 ${errors.renda ? "is-invalid" : ""}`}
+              value={renda}
+              onChange={(e) => setRenda(e.target.value)}
+            />
+            <div className="invalid-feedback">{errors.renda}</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label className="form-label mb-0" style={{ color: "#5a3ec8" }}>
+              Total de Custos Mensais (R$)
+            </label>
+          </td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="Ex: 1200.00"
+              className={`form-control rounded-3 ${errors.custos ? "is-invalid" : ""}`}
+              value={custos}
+              onChange={(e) => setCustos(e.target.value)}
+            />
+            <div className="invalid-feedback">{errors.custos}</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label className="form-label mb-0" style={{ color: "#5a3ec8" }}>
+              Profissão:
+            </label>
+          </td>
+          <td>
+            <select
+              className="form-select rounded-3"
+              value={profissao}
+              onChange={(e) => setProfissao(e.target.value)}
+            >
+              <option>Psicólogo(a)</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td colSpan="2">
+            <div className="form-check form-switch">
               <input
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="Ex: 5000.00"
-                className={`form-control ${errors.renda ? "is-invalid" : ""}`}
-                value={renda}
-                onChange={(e) => setRenda(e.target.value)}
+                className="form-check-input"
+                type="checkbox"
+                id="sendEmailSwitch"
+                checked={sendEmail}
+                onChange={(e) => setSendEmail(e.target.checked)}
               />
-              <div className="invalid-feedback">{errors.renda}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <label className="form-label mb-0">
-                Total de Custos Mensais (R$)
+              <label className="form-check-label" htmlFor="sendEmailSwitch">
+                Deseja receber os cálculos por e-mail?
               </label>
-            </td>
-            <td>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="Ex: 1200.00"
-                className={`form-control ${errors.custos ? "is-invalid" : ""}`}
-                value={custos}
-                onChange={(e) => setCustos(e.target.value)}
-              />
-              <div className="invalid-feedback">{errors.custos}</div>
-            </td>
-          </tr>
+            </div>
+          </td>
+        </tr>
 
+        {sendEmail && (
           <tr>
             <td>
-              <label className="form-label mb-0">Profissão:</label>
-            </td>
-            <td>
-              <select
-                className="form-select"
-                value={profissao}
-                onChange={(e) => setProfissao(e.target.value)}
-              >
-                <option>Psicólogo(a)</option>
-              </select>
-            </td>
-          </tr>
-
-          <tr>
-            <td colSpan="2">
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="sendEmailSwitch"
-                  checked={sendEmail}
-                  onChange={(e) => setSendEmail(e.target.checked)}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor="sendEmailSwitch"
-                >
-                  Deseja receber os cálculos por e-mail?
-                </label>
-              </div>
-            </td>
-          </tr>
-
-          {sendEmail && (
-            <tr>
-              <td>
-                <label className="form-label mb-0">Seu e-mail:</label>
-              </td>
-              <td>
-                <input
-                  type="email"
-                  className={`form-control ${errors.emailUser ? "is-invalid" : ""}`}
-                  value={emailUser}
-                  onChange={(e) => setEmailUser(e.target.value)}
-                />
-                <div className="invalid-feedback">{errors.emailUser}</div>
-              </td>
-            </tr>
-          )}
-
-          <tr>
-            <td>
-              <label className="form-label mb-0">
-                Enviar e-mail para o NAF (opcional)
+              <label className="form-label mb-0" style={{ color: "#5a3ec8" }}>
+                Seu e-mail:
               </label>
             </td>
             <td>
               <input
                 type="email"
-                className={`form-control ${errors.emailNAF ? "is-invalid" : ""}`}
-                placeholder="email@naf.exemplo"
-                value={emailNAF}
-                onChange={(e) => setEmailNAF(e.target.value)}
+                className={`form-control rounded-3 ${errors.emailUser ? "is-invalid" : ""}`}
+                value={emailUser}
+                onChange={(e) => setEmailUser(e.target.value)}
               />
-              <div className="invalid-feedback">{errors.emailNAF}</div>
-              <div className="form-text">
-                Se informado, o resultado será preparado para envio ao NAF.
-              </div>
+              <div className="invalid-feedback">{errors.emailUser}</div>
             </td>
           </tr>
-        </tbody>
-      </table>
+        )}
 
-      <div className="d-flex justify-content-end mt-3">
-        <button className="btn btn-primary" type="submit">
-          Comparar PF × PJ
-        </button>
-      </div>
+        <tr>
+          <td>
+            <label className="form-label mb-0" style={{ color: "#5a3ec8" }}>
+              Enviar e-mail para o NAF (opcional)
+            </label>
+          </td>
+          <td>
+            <input
+              type="email"
+              className={`form-control rounded-3 ${errors.emailNAF ? "is-invalid" : ""}`}
+              placeholder="email@naf.exemplo"
+              value={emailNAF}
+              onChange={(e) => setEmailNAF(e.target.value)}
+            />
+            <div className="invalid-feedback">{errors.emailNAF}</div>
+            <div className="form-text">
+              Se informado, o resultado será preparado para envio ao NAF.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <InfoModal show={showInfo} onHide={() => setShowInfo(false)} />
-    </form>
-  );
+    <div className="d-flex justify-content-end mt-3">
+      <button
+        className="btn fw-bold rounded-pill px-4"
+        type="submit"
+        style={{ backgroundColor: "#6a5acd", color: "white" }}
+      >
+        Comparar PF × PJ
+      </button>
+    </div>
+
+    <InfoModal show={showInfo} onHide={() => setShowInfo(false)} />
+  </form>
+);
 }

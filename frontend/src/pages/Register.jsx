@@ -1,29 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 export default function Register() {
-
   const api = axios.create({
-  baseURL: 'http://localhost:5000/auth',
-  timeout: 1000,
-  headers: {'X-Custom-Header': 'foobar'}
-});
+    baseURL: "http://localhost:5000/auth",
+    timeout: 1000,
+    headers: { "X-Custom-Header": "foobar" },
+  });
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -40,99 +39,111 @@ export default function Register() {
   };
 
   const handleSubmit = (e) => {
-
-    console.log("teste", formData);
-
     e.preventDefault();
     if (validateForm()) {
-      // Aqui você implementaria a lógica de registro
-
-        api.post('/register', {
-        email: formData.email,
-        password: formData.password,
+      api
+        .post("/register", {
+          email: formData.email,
+          password: formData.password,
         })
-        .then(function (response) {
+        .then((response) => {
           console.log(response);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
 
       console.log("Registro:", formData);
-      // Por enquanto vamos apenas redirecionar para login
       navigate("/login");
     }
   };
 
   return (
-    <div className="container animate__animated animate__fadeInUp "  style={{ marginTop: '175px'}} >
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card shadow">
-            <div className="card-body">
-              <h2 className="text-center mb-4">Registro</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Nome:</label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                    placeholder="Seu Nome Completo"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                  {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email:</label>
-                  <input
-                    type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                    placeholder="seu@email.com"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                  {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Senha:</label>
-                  <input
-                    type="password"
-                    className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                  <div className="form-text">
-                    Sua senha deve ter entre 8 e 20 caracteres, conter letras e números e não deve conter espaços, caracteres especiais ou emojis.
-                  </div>
-                  {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Confirmar Senha:</label>
-                  <input
-                    type="password"
-                    className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-                </div>
-                <div className="d-grid">
-                  <button type="submit" className="btn btn-primary">
-                    Registrar
-                  </button>
-                </div>
-                <p className="text-center mt-3">
-                  Já tem uma conta? <Link to="/login">Entre aqui</Link>
-                </p>
-              </form>
-            </div>
+    <div
+      className="d-flex justify-content-center align-items-center vh-100 animate__animated animate__fadeInUp"
+      style={{
+        background: "linear-gradient(135deg, #6a5acd, #a6b1ff)", // gradiente roxo-azul
+      }}
+    >
+      <div
+        className="card shadow-lg border-0 p-4"
+        style={{
+          maxWidth: "420px",
+          width: "100%",
+          borderRadius: "20px", // caixa arredondada
+          backgroundColor: "white", // fundo branco
+          color: "#333", // texto preto
+        }}
+      >
+        <h2 className="text-center mb-4 fw-bold">Registro</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Nome:</label>
+            <input
+              type="text"
+              className={`form-control rounded-3 ${errors.name ? "is-invalid" : ""}`}
+              placeholder="Seu Nome Completo"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
           </div>
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Email:</label>
+            <input
+              type="email"
+              className={`form-control rounded-3 ${errors.email ? "is-invalid" : ""}`}
+              placeholder="seu@email.com"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Senha:</label>
+            <input
+              type="password"
+              className={`form-control rounded-3 ${errors.password ? "is-invalid" : ""}`}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <div className="form-text">
+              Sua senha deve ter entre 8 e 20 caracteres, conter letras e números e não deve conter espaços, caracteres especiais ou emojis.
+            </div>
+            {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Confirmar Senha:</label>
+            <input
+              type="password"
+              className={`form-control rounded-3 ${errors.confirmPassword ? "is-invalid" : ""}`}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+          </div>
+          <div className="d-grid mb-3">
+            <button
+              type="submit"
+              className="btn fw-bold rounded-pill"
+              style={{ backgroundColor: "#6a5acd", color: "white" }}
+            >
+              Registrar
+            </button>
+          </div>
+        </form>
+
+        {/* Link para login */}
+        <p className="text-center mt-3">
+          Já tem uma conta?{" "}
+          <Link to="/login" style={{ color: "#6a5acd", fontWeight: "600" }}>
+            Faça login
+          </Link>
+        </p>
       </div>
     </div>
   );
