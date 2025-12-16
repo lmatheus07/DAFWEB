@@ -2,7 +2,7 @@
 
 
 ## 📌 Sobre o projeto
-Este é um projeto desenvolvido para a faculdade com o objetivo de **comparar a tributação entre Pessoa Física (PF) e Pessoa Jurídica (PJ)** de forma simples e visual.  
+Este é um projeto desenvolvido para a cadeira de Desenvolvimento e Aplicações e Frameworks Web, da Unichristus - DOM LUIS, com o objetivo de criar uma aplicação que **compare a tributação entre Pessoa Física (PF) e Pessoa Jurídica (PJ)** de forma simples e visual.  
 A aplicação permite que o usuário insira sua renda mensal, custos e profissão, e receba um comparativo detalhado entre os dois regimes, incluindo:
 
 - INSS  
@@ -49,7 +49,8 @@ Além disso, o sistema gera gráficos comparativos e possibilita enviar os resul
 ### Pré-requisitos
 - Node.js 16+  
 - Docker e Docker Compose  
-- Git  
+- Git
+- Prisma 5.10
 
 ### Setup Inicial
 
@@ -96,7 +97,6 @@ Copie o arquivo .env.example para .env e preencha seus valores:
 - `src/templates/` → templates de email e relatórios  
 - `src/utils/` → funções utilitárias  
 - `src/server.js` → arquivo principal do servidor  
-- `migrations/` → scripts de inicialização do banco de dados  
 - `docker-compose.yml` → configuração Docker  
 - `package.json` → dependências e scripts do backend  
 - `.env.example` → exemplo de variáveis de ambiente  
