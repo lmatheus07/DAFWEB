@@ -1,250 +1,105 @@
-# Backend - Calculadora de Tributação
+# 📊 Calculadora Tributária 
 
-Backend Node.js + Express com autenticação JWT, PostgreSQL e envio de e-mail para NAF.
+## 📌 Sobre o projeto
+Este é um projeto desenvolvido para a faculdade com o objetivo de **comparar a tributação entre Pessoa Física (PF) e Pessoa Jurídica (PJ)** de forma simples e visual.  
+A aplicação permite que o usuário insira sua renda mensal, custos e profissão, e receba um comparativo detalhado entre os dois regimes, incluindo:
 
-## Pré-requisitos
+- INSS  
+- Imposto de Renda  
+- Simples Nacional (PJ – 6%)  
+- Total de impostos  
+- Renda líquida após tributos  
 
-- Node.js 16+
-- Docker e Docker Compose
-- Git
+Além disso, o sistema gera gráficos comparativos e possibilita enviar os resultados para o **NAF (Núcleo de Apoio Contábil e Fiscal)** via e-mail.
 
-## Setup Inicial
+---
 
-### 1. Instalar dependências
+## 🚀 Tecnologias utilizadas
+- **React.js** – construção da interface  
+- **React Router** – navegação entre páginas (Login e Home)  
+- **Chart.js** – geração dos gráficos comparativos  
+- **Bootstrap** – estilização e responsividade  
+- **Node.js/Express (backend)** – envio de e-mails e integração  
+- **PostgreSQL + Docker Compose** – banco de dados e containerização  
 
+---
+
+## ⚙️ Funcionalidades
+- Formulário para entrada de dados (renda, custos, profissão, e-mails).  
+- Comparativo automático entre PF e PJ.  
+- Exibição detalhada em tabela: INSS, IR, Simples Nacional, total de impostos e renda líquida.  
+- Gráfico comparativo PF × PJ.  
+- Botão de **Sair** que retorna para a tela de login.  
+- Envio dos resultados por e-mail para o NAF.  
+
+---
+
+## 📂 Estrutura principal (Frontend)
+- `src/components/CalculatorForm.jsx` → formulário de entrada.  
+- `src/components/CompareResult.jsx` → tabela e gráfico comparativo.  
+- `src/components/GraficoComparativo.jsx` → gráfico com Chart.js.  
+- `src/pages/Home.jsx` → página principal com header e botão de sair.  
+- `src/util/tax.js` → funções de cálculo de impostos (PF e PJ).  
+
+---
+
+## ▶️ Como executar
+
+### Pré-requisitos
+- Node.js 16+  
+- Docker e Docker Compose  
+- Git  
+
+### Setup Inicial
+
+#### 1. Clonar repositório
 ```bash
-npm install
+git clone https://github.com/lmatheus07/DAFWEB.git
 ```
 
-### 2. Configurar variáveis de ambiente
+#### 2. Instalar dependências
+- npm install
 
-Copie o arquivo `.env.example` para `.env` e preencha com seus valores:
+#### 3. Configurar variáveis de ambiente
+Copie o arquivo .env.example para .env e preencha seus valores:
+**cp .env.example .env**
 
-```bash
-cp .env.example .env
-```
+#### Edite .env com: 
+- **DB_PASSWORD**: Senha do PostgreSQL (deve corresponder ao docker-compose.yml)
+- **JWT_SECRET**: Chave secreta para JWT (gere uma aleatória)
+- **EMAIL_USER e EMAIL_PASSWORD**: Credenciais do seu serviço de e-mail (ex: Gmail)
+- **FRONTEND_URL**: URL do seu frontend (ex: http://localhost:5173)
 
-**Edite `.env` com:**
-- `DB_PASSWORD`: Senha do PostgreSQL (deve corresponder ao docker-compose.yml)
-- `JWT_SECRET`: Chave secreta para JWT (gere uma aleatória)
-- `EMAIL_USER` e `EMAIL_PASSWORD`: Credenciais do seu serviço de e-mail (ex: Gmail)
-- `FRONTEND_URL`: URL do seu frontend (ex: http://localhost:5173)
+#### 4. Iniciar PostegreSQL com Docker:
+**docker-compose up -d**
+# Verificar se container está rodando com:
+**docker-compose ps**
 
-### 3. Iniciar PostgreSQL com Docker
 
-```bash
-docker-compose up -d
-```
+#### 5. Inicializar o banco de dados com:
+**npm run db:init**
+- Este comando criará as tabelas `users` e `comparisons`
 
-Para verificar se o container está rodando:
-```bash
-docker-compose ps
-```
+#### 6. Iniciar o servidor
+**npm run dev**
 
-### 4. Inicializar o banco de dados
+- O servidor estará rodando em `http://localhost:5000`
 
-```bash
-npm run db:init
-```
+## 📂 Estrutura principal (Backend)
+- `src/config/` → configurações de banco de dados e email  
+- `src/controllers/` → lógica de negócio das rotas  
+- `src/middleware/` → middlewares (ex: autenticação)  
+- `src/models/` → modelos de dados (ex: usuários, comparações)  
+- `src/routes/` → definição das rotas da API  
+- `src/services/` → serviços auxiliares (ex: envio de email)  
+- `src/templates/` → templates de email e relatórios  
+- `src/utils/` → funções utilitárias  
+- `src/server.js` → arquivo principal do servidor    
+- `docker-compose.yml` → configuração Docker  
+- `package.json` → dependências e scripts do backend  
+- `.env.example` → exemplo de variáveis de ambiente  
+- `.gitignore` → arquivos ignorados pelo Git
 
-Este comando criará as tabelas `users` e `comparisons`.
 
-### 5. Iniciar o servidor
-
-**Modo desenvolvimento (com hot-reload):**
-```bash
-npm run dev
-```
-
-**Modo produção:**
-```bash
-npm start
-```
-
-O servidor estará rodando em `http://localhost:5000`
-
-## Endpoints
-
-### Autenticação
-
-#### Registrar novo usuário
-```bash
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "email": "usuario@email.com",
-  "password": "senha123"
-}
-```
-
-**Resposta (201):**
-```json
-{
-  "message": "Usuário criado com sucesso",
-  "user": { "id": 1, "email": "usuario@email.com" },
-  "token": "eyJhbGc..."
-}
-```
-
-#### Fazer login
-```bash
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "usuario@email.com",
-  "password": "senha123"
-}
-```
-
-**Resposta (200):**
-```json
-{
-  "message": "Login realizado com sucesso",
-  "user": { "id": 1, "email": "usuario@email.com" },
-  "token": "eyJhbGc..."
-}
-```
-
-#### Obter perfil (requer autenticação)
-```bash
-GET /api/auth/profile
-Authorization: Bearer eyJhbGc...
-```
-
-**Resposta (200):**
-```json
-{
-  "user": { "id": 1, "email": "usuario@email.com", "created_at": "2024-12-07T..." }
-}
-```
-
-### Email / NAF
-
-#### Enviar resultado para NAF (requer autenticação)
-```bash
-POST /api/email/send-to-naf
-Authorization: Bearer eyJhbGc...
-Content-Type: application/json
-
-{
-  "nafEmail": "naf@email.com",
-  "userEmail": "usuario@email.com",
-  "comparisonData": {
-    "input": {
-      "rendaMensal": 5000,
-      "custosMensais": 500,
-      "profissao": "Psicólogo(a)"
-    },
-    "PF": {
-      "base": 4500,
-      "imposto": 450,
-      "liquido": 4550,
-      "effectiveRate": 0.09
-    },
-    "PJ": {
-      "impostoMensal": 300,
-      "prolabore": 1400,
-      "inss": 154,
-      "irProlabore": { "imposto": 0 },
-      "totalImpostos": 454,
-      "liquido": 4546,
-      "effectiveRate": 0.0908
-    }
-  }
-}
-```
-
-**Resposta (200):**
-```json
-{
-  "message": "Email enviado com sucesso para o NAF",
-  "messageId": "unique_message_id"
-}
-```
-
-## Configurar Email com Gmail
-
-1. Ative a autenticação de dois fatores na sua conta Google
-2. Crie uma senha de aplicativo em: https://myaccount.google.com/apppasswords
-3. Use o email como `EMAIL_USER` e a senha gerada como `EMAIL_PASSWORD` no `.env`
-
-Exemplo `.env`:
-```
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=seu_email@gmail.com
-EMAIL_PASSWORD=sua_senha_de_aplicativo
-```
-
-## Docker - Comandos úteis
-
-```bash
-# Iniciar serviços
-docker-compose up -d
-
-# Parar serviços
-docker-compose down
-
-# Ver logs do PostgreSQL
-docker-compose logs postgres
-
-# Entrar no shell do PostgreSQL
-docker exec -it calculadora_tributacao_db psql -U postgres -d calculadora_tributacao
-
-# Remover volume (CUIDADO: deleta dados)
-docker-compose down -v
-```
-
-## Estrutura de pastas
-
-```
-backend/
-├── src/
-│   ├── config/          # Configurações (DB, Email)
-│   ├── controllers/     # Lógica de negócio
-│   ├── middleware/      # Middlewares (autenticação)
-│   ├── models/          # Modelos de dados
-│   ├── routes/          # Rotas
-│   ├── utils/           # Funções utilitárias
-│   └── server.js        # Arquivo principal
-├── migrations/          # Scripts de inicialização
-├── docker-compose.yml   # Configuração Docker
-├── package.json
-├── .env.example
-└── .gitignore
-```
-
-## Segurança
-
-- ⚠️ Altere `JWT_SECRET` em produção
-- ⚠️ Use variáveis de ambiente para credentials
-- ⚠️ Use HTTPS em produção
-- ⚠️ Valide e sanitize entrada de dados
-- ⚠️ Use senhas fortes no banco de dados
-
-## Troubleshooting
-
-**Erro: "connect ECONNREFUSED" ao iniciar servidor**
-- Certifique-se de que o PostgreSQL está rodando: `docker-compose ps`
-- Verifique variáveis de ambiente em `.env`
-
-**Erro: "SMTP Error" ao enviar email**
-- Verifique credenciais de email em `.env`
-- Se usar Gmail, confirme que usou a senha de aplicativo (não a senha regular)
-- Verifique se a porta SMTP (587) está acessível
-
-**Banco de dados não inicializa**
-- Delete o volume: `docker-compose down -v`
-- Reinicie: `docker-compose up -d`
-- Execute: `npm run db:init`
-
-## Próximos passos
-
-- [ ] Adicionar validação mais robusta
-- [ ] Implementar rate limiting
-- [ ] Adicionar refresh tokens
-- [ ] Implementar logs estruturados
-- [ ] Adicionar testes automatizados
-- [ ] Deploy em produção (Render, Railway, Heroku)
+## Observações
+**Este projeto foi desenvolvido como parte de um trabalho acadêmico, com foco em aplicações práticas de tributação e programação web. Não deve ser utilizado como ferramenta oficial de cálculo tributário, mas sim como exercício didático.**
