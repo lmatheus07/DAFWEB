@@ -85,23 +85,21 @@ Copie o arquivo .env.example para .env e preencha seus valores:
 
 - O servidor estará rodando em `http://localhost:5000`
 
-## Estrutura das pastas (Backend)
-backend/
-├── src/
-│   ├── config/          # Configurações (DB, Email)
-│   ├── controllers/     # Lógica de negócio
-│   ├── middleware/      # Middlewares (autenticação)
-│   ├── models/          # Modelos de dados
-│   ├── routes/          # Rotas
-│   ├── services/        # Serviços de envio de email
-│   ├── templates/       # Geração gráfica do email
-│   ├── utils/           # Funções utilitárias
-│   └── server.js        # Arquivo principal
-├── migrations/          # Scripts de inicialização
-├── docker-compose.yml   # Configuração Docker
-├── package.json
-├── .env.example
-└── .gitignore
+## 📂 Estrutura principal (Backend)
+- `src/config/` → configurações de banco de dados e email  
+- `src/controllers/` → lógica de negócio das rotas  
+- `src/middleware/` → middlewares (ex: autenticação)  
+- `src/models/` → modelos de dados (ex: usuários, comparações)  
+- `src/routes/` → definição das rotas da API  
+- `src/services/` → serviços auxiliares (ex: envio de email)  
+- `src/templates/` → templates de email e relatórios  
+- `src/utils/` → funções utilitárias  
+- `src/server.js` → arquivo principal do servidor  
+- `migrations/` → scripts de inicialização do banco de dados  
+- `docker-compose.yml` → configuração Docker  
+- `package.json` → dependências e scripts do backend  
+- `.env.example` → exemplo de variáveis de ambiente  
+- `.gitignore` → arquivos ignorados pelo Git
 
 
 ## Observações
