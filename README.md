@@ -1,5 +1,6 @@
 # 📊 Calculadora Tributária 
 
+
 ## 📌 Sobre o projeto
 Este é um projeto desenvolvido para a faculdade com o objetivo de **comparar a tributação entre Pessoa Física (PF) e Pessoa Jurídica (PJ)** de forma simples e visual.  
 A aplicação permite que o usuário insira sua renda mensal, custos e profissão, e receba um comparativo detalhado entre os dois regimes, incluindo:
